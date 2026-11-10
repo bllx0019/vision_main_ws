@@ -9,9 +9,15 @@ project(detection_node)
 ## is used, also find other catkin packages
 find_package(catkin REQUIRED COMPONENTS
   cv_bridge
+  dynamic_reconfigure
   image_transport
   roscpp
   sensor_msgs
+)
+
+## rqt_reconfigure 用的动态参数：cfg/detection.cfg -> detection_node/detectionConfig.h
+generate_dynamic_reconfigure_options(
+  cfg/detection.cfg
 )
 
 ## System dependencies are found with CMake's conventions
@@ -206,17 +212,22 @@ include_directories(
 ## Add folders to be run by python nosetests
 # catkin_add_nosetests(test)
 
-add_executable(detection_node_blue src/detection_hsv_blue.cpp)
 add_executable(detection_node_red src/detection_hsv_red.cpp)
+add_executable(detection_hsv src/detection_hsv.cpp)
 
-#target_link_libraries(detection_node ${catkin_LIBRARIES})
-target_link_libraries(detection_node_blue
-  ${catkin_LIBRARIES}
-  ${OpenCV_LIBS}
-)
+
+# 动态参数的头文件是生成出来的，必须等 generate_dynamic_reconfigure_options 跑完
+add_dependencies(detection_node_red ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
+add_dependencies(detection_hsv ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
+
 
 target_link_libraries(detection_node_red
   ${catkin_LIBRARIES}
   ${OpenCV_LIBS}
-
 )
+
+target_link_libraries(detection_hsv
+  ${catkin_LIBRARIES}
+  ${OpenCV_LIBS}
+)
+

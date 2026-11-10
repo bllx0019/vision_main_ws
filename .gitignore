@@ -1,0 +1,24 @@
+# ---------- catkin 构建产物 ----------
+build/
+devel/
+install/
+logs/
+.catkin_tools/
+
+# ---------- IDE 缓存（.vscode/browse.vc.db 单文件约 1 GB）----------
+.vscode/
+*.vc.db
+*.vc.db.lock
+
+# ---------- rosbag 数据（单条最大约 450 MB，超 GitHub 100 MB 硬限制）----------
+bag/
+*.bag
+*.bag.active
+
+# ---------- 杂项 ----------
+__pycache__/
+*.pyc
+*.o
+*.so
+*.log
+.DS_Store
